@@ -8,22 +8,23 @@ prefetch: build
 	g++ matrix.c -D OPTIMIZE_PREFETCH -o $(BUILD)/$@
 
 simd: build
-	g++ matrix.c -D OPTIMIZE_SIMD -o $(BUILD)/$@
+	g++ matrix.c -mavx -march=native -D OPTIMIZE_SIMD -o $(BUILD)/$@
 
 blocking-prefetch: build
 	g++ matrix.c -D OPTIMIZE_BLOCKING_PREFETCH -o $(BUILD)/$@
 
 blocking-simd: build
-	g++ matrix.c -D OPTIMIZE_BLOCKING_SIMD -o $(BUILD)/$@
+	g++ matrix.c -mavx -march=native -D OPTIMIZE_BLOCKING_SIMD -o $(BUILD)/$@
 
 simd-prefetch: build
-	g++ matrix.c -D OPTIMIZE_SIMD_PREFETCH -o $(BUILD)/$@
+	g++ matrix.c -mavx -march=native -D OPTIMIZE_SIMD_PREFETCH -o $(BUILD)/$@
 
 blocking-simd-prefetch: build
-	g++ matrix.c -D OPTIMIZE_BLOCKING_SIMD_PREFETCH -o $(BUILD)/$@
+	g++ matrix.c -mavx -march=native -D OPTIMIZE_BLOCKING_SIMD_PREFETCH -o $(BUILD)/$@
 
-all: build
-	g++ matrix.c -D OPTIMIZE_BLOCKING -D OPTIMIZE_SIMD -D OPTIMIZE_PREFETCH -D OPTIMIZE_BLOCKING_PREFETCH -D OPTIMIZE_BLOCKING_SIMD -D OPTIMIZE_SIMD_PREFETCH -D OPTIMIZE_BLOCKING_SIMD_PREFETCH -o $(BUILD)/$@
+
+all: blocking prefetch simd blocking-prefetch blocking-simd simd-prefetch blocking-simd-prefetch
+
 
 clean:
 	@rm -rf $(BUILD)
